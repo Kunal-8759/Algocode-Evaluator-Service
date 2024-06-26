@@ -4,9 +4,9 @@
     "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" },
     "rules": {
         "semi": ["error", "always"],
-        "indent": ["error", "tab"],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error"
+
     },
     "plugins": ["simple-import-sort"]
   }

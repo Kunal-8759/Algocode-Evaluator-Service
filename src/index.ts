@@ -1,10 +1,13 @@
-import express,{Express} from "express";
+import express, { Express } from "express";
 
-import serverconfig  from "./config/server.config";
+import serverconfig from "./config/server.config";
+import apiRouter from "./routes";
+
+const app: Express = express();
+
+app.use('/api',apiRouter);
 
 
-const app:Express =express();
-
-app.listen(serverconfig.PORT,()=>{
+app.listen(serverconfig.PORT, () => {
 	console.log(`served started at port ${serverconfig.PORT}`);
 });

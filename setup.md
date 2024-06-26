@@ -17,3 +17,21 @@
     "dev": "npx nodemon dist/index.js",-->before executing this prestart will run then dist/index.js run
     "start": "npx concurrently \"npm run watch\" \"npm run dev\""
   },
+
+
+
+  eslint-->for consistency in the code
+    https://randomzed.medium.com/configure-eslint-prettier-for-a-typescript-project-node-js-79b9f417d2cd
+   
+    npm i eslint-plugin-simple-import-sort-->for the import export sorting
+
+    also install the eslintrc extension in the vs code
+
+
+    
+
+
+
+
+
+  

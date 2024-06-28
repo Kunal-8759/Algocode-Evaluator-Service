@@ -28,6 +28,21 @@
     also install the eslintrc extension in the vs code
 
 
+
+
+
+
+
+
+
+BullMQ-->use reddis queue in nodejs project
+reddis->message broker(architecture which follows message queues for producer and consumer)
+
+1.install reddis on the laptop
+2. npm install bullmq ioredis
+3.npm install @types/ioredis-->ioredis for the typescript
+
+
     
 
 

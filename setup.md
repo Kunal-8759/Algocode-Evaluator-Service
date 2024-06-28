@@ -44,7 +44,7 @@ reddis->message broker(architecture which follows message queues for producer an
 
 
     
-
+bull mq provide a dashboard -->npm add @bull-board/express and then set up
 
 
 

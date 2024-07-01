@@ -49,4 +49,10 @@ bull mq provide a dashboard -->npm add @bull-board/express and then set up
 
 
 
+
+####
+validation layer using zod
+npm i zod
+1.before the controller a middleware is set that validates 
+
   

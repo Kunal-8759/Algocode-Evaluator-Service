@@ -1,3 +1,4 @@
+import bodyParser from "body-parser";
 import express, { Express } from "express";
 
 import serverconfig from "./config/server.config";
@@ -8,6 +9,9 @@ import SampleWorker from "./workers/sample.worker";
 
 
 const app: Express = express();
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 app.use('/api',apiRouter);
 

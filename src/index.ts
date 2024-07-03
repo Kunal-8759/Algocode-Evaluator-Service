@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express, { Express } from "express";
 
 import serverconfig from "./config/server.config";
+import runPython from "./containers/runPythonDocker";
 import sampleProducers from "./producers/sampleProducers";
 import sampleQueue from "./queues/sample.queue";
 import apiRouter from "./routes";
@@ -57,5 +58,19 @@ app.listen(serverconfig.PORT, () => {
 	},{
 		priority:1
 	});
+
+
+
+	const code = `x = input()
+y = input()
+print("value of x is", x)
+print("value of y is", y)
+`;
+
+const inputCase = `100
+200
+`;
+
+  runPython(code, inputCase);
 	
 });

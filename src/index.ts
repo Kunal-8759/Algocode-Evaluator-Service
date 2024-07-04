@@ -2,8 +2,7 @@ import bodyParser from "body-parser";
 import express, { Express } from "express";
 
 import serverconfig from "./config/server.config";
-import runPython from "./containers/runPythonDocker";
-import sampleProducers from "./producers/sampleProducers";
+import runCpp from "./containers/runCppDocker";
 import apiRouter from "./routes";
 import SampleWorker from "./workers/sample.worker";
 
@@ -29,36 +28,40 @@ app.listen(serverconfig.PORT, () => {
 	console.log(`served started at port ${serverconfig.PORT}`);
 
 	SampleWorker('SampleQueue');
-	sampleProducers('SampleJob',{
-		name:"kunal kumar",
-		company:"Oracle",
-		position :"intern",
-		loaction :"Remote"
-	},{
-		priority:2
-	});
-
-	sampleProducers('SampleJob',{
-		name:"Gulshan Vikas",
-		company:"Oracle",
-		position:"sde-1",
-		location:"Noida"
-	},{
-		priority:1
-	});
-
-
-
-	const code = `x = input()
-y = input()
-print("value of x is", x)
-print("value of y is", y)
-`;
-
-const inputCase = `100
-200
-`;
-
-  runPython(code, inputCase);
 	
+
+
+	//code to run the cpp code
+	const userCode = `
+    class Solution {
+      public:
+      vector<int> permute() {
+          vector<int> v;
+          v.push_back(10);
+          return v;
+      }
+    };
+  `;
+
+  const code = `
+  #include<bits/stdc++.h>
+  using namespace std;
+  
+  ${userCode}
+  int main() {
+    Solution s;
+    vector<int> result = s.permute();
+    for(int x : result) {
+      cout<<x<<" ";
+    }
+    cout<<endl;
+    return 0;
+  }
+  `;
+
+const inputCase = `10
+`;
+
+  runCpp(code, inputCase);
+
 });

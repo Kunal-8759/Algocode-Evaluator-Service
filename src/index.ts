@@ -4,7 +4,6 @@ import express, { Express } from "express";
 import serverconfig from "./config/server.config";
 import runPython from "./containers/runPythonDocker";
 import sampleProducers from "./producers/sampleProducers";
-import sampleQueue from "./queues/sample.queue";
 import apiRouter from "./routes";
 import SampleWorker from "./workers/sample.worker";
 
@@ -20,19 +19,8 @@ app.use('/api',apiRouter);
 
 //setting up the bull-board ui
 
-import {createBullBoard} from '@bull-board/api';
-import {BullAdapter} from '@bull-board/api/bullAdapter';
-import { ExpressAdapter } from "@bull-board/express";
-
-const serverAdapter = new ExpressAdapter();
-serverAdapter.setBasePath('/admin');
-
-createBullBoard({
-	queues:[new BullAdapter(sampleQueue)],
-	serverAdapter:serverAdapter
-});
-
-app.use('/admin',serverAdapter.getRouter());
+import { serverAdapter } from "./config/bullBoard.config";
+app.use('/ui',serverAdapter.getRouter());
 
 
 

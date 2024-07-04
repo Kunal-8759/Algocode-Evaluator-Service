@@ -1,10 +1,12 @@
 import bodyParser from "body-parser";
 import express, { Express } from "express";
 
+import { serverAdapter } from "./config/bullBoard.config";
 import serverconfig from "./config/server.config";
-import runCpp from "./containers/runCppDocker";
+import submissionProducers from "./producers/submissionProducers";
 import apiRouter from "./routes";
-import SampleWorker from "./workers/sample.worker";
+import SubmissionWorker from "./workers/submission.worker";
+
 
 
 const app: Express = express();
@@ -18,7 +20,6 @@ app.use('/api',apiRouter);
 
 //setting up the bull-board ui
 
-import { serverAdapter } from "./config/bullBoard.config";
 app.use('/ui',serverAdapter.getRouter());
 
 
@@ -27,8 +28,9 @@ app.use('/ui',serverAdapter.getRouter());
 app.listen(serverconfig.PORT, () => {
 	console.log(`served started at port ${serverconfig.PORT}`);
 
-	SampleWorker('SampleQueue');
+	// SampleWorker('SampleQueue');
 	
+	SubmissionWorker('SubmissionQueue');
 
 
 	//code to run the cpp code
@@ -62,6 +64,14 @@ app.listen(serverconfig.PORT, () => {
 const inputCase = `10
 `;
 
-  runCpp(code, inputCase);
+	submissionProducers({
+		"123":{
+			language:"CPP",
+			inputCase,
+			code
+		}
+	});
+
+//   runCpp(code, inputCase);
 
 });

@@ -1,16 +1,19 @@
 import { PYTHON_IMAGE } from '../utils/constants';
 import createContainer from './containersFactory';
 import decodeDockerStream from './dockerHelper';
+import pullImage from './pullImage';
 
 
 async function runPython(code: string, inputTestCase: string) {
     const rawLogBuffer: Buffer[] = [];//array of type buffer that holds the chunk
 
+    //lets first pull the python image into the local machine
+    await pullImage(PYTHON_IMAGE);//python image is a string 
+
     const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > test.py && echo '${inputTestCase.replace(/'/g, `'\\"`)}' | python3 test.py`;
     console.log(runCommand);
     // const pythonDockerContainer = await createContainer(PYTHON_IMAGE, ['python3', '-c', code, 'stty -echo']); 
 
-    
     //initialising the new python container 
     const pythonDockerContainer = await createContainer(PYTHON_IMAGE, [
         '/bin/sh', 

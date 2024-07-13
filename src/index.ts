@@ -28,7 +28,6 @@ app.use('/ui',serverAdapter.getRouter());
 app.listen(serverconfig.PORT, () => {
 	console.log(`served started at port ${serverconfig.PORT}`);
 
-	// SampleWorker('SampleQueue');
 	
 	SubmissionWorker('SubmissionQueue');
 
@@ -72,6 +71,6 @@ const inputCase = `10
 		}
 	});
 
-//   runCpp(code, inputCase);
+
 
 });

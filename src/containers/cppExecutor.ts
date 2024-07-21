@@ -6,7 +6,7 @@ import pullImage from './pullImage';
 
 
 class CppExecutor implements CodeExecutorStrategy{
-    async execute(code:string ,inputTestCase:string):Promise<ExecutionResponse>{
+    async execute(code:string ,inputTestCase:string,outputTestCase:string):Promise<ExecutionResponse>{
 
         const rawLogBuffer: Buffer[] = [];//array of type buffer that holds the chunk
 
@@ -37,13 +37,23 @@ class CppExecutor implements CodeExecutorStrategy{
         });
 
         try {
-            const codeResponse :string =await fetchDecodedStream(loggerStream,rawLogBuffer);
-            //if the promise resolved => stdout else stderr
-            return {output:codeResponse,status:"COMPLETED"};
+            const codeResponse : string = await fetchDecodedStream(loggerStream, rawLogBuffer);
+
+            if(codeResponse.trim()===outputTestCase.trim()){
+                return {output:codeResponse,status:"SUCCESS"};
+            }
+            else{
+                return {output: codeResponse, status: "WA"};
+            }
+            
         } catch (error) {
-            return {output:error as string,status : "ERROR"};
-        } finally{
+            if(error==="TLE"){
+                await cppDockerContainer.kill();
+            }
+            return {output: error as string, status: "ERROR"};
+        } finally {
             await cppDockerContainer.remove();
+
         }
         
     }

@@ -5,7 +5,7 @@ import fetchDecodedStream from "./fetchDecodedStream";
 import pullImage from "./pullImage";
 
 class JavaExecutor implements CodeExecutorStrategy{
-    async execute(code:string,inputTestCase:string):Promise<ExecutionResponse>{
+    async execute(code:string,inputTestCase:string,outputTestCase:string):Promise<ExecutionResponse>{
         const rawLogBuffer:Buffer[]=[];
         await pullImage(JAVA_IMAGE);
 
@@ -32,8 +32,18 @@ class JavaExecutor implements CodeExecutorStrategy{
 
         try {
             const codeResponse : string = await fetchDecodedStream(loggerStream, rawLogBuffer);
-            return {output: codeResponse, status: "COMPLETED"};
+
+            if(codeResponse.trim()===outputTestCase.trim()){
+                return {output:codeResponse,status:"SUCCESS"};
+            }
+            else{
+                return {output: codeResponse, status: "WA"};
+            }
+            
         } catch (error) {
+            if(error==="TLE"){
+                await javaDockerContainer.kill();
+            }
             return {output: error as string, status: "ERROR"};
         } finally {
             await javaDockerContainer.remove();

@@ -15,40 +15,41 @@ export default class SubmissionJob implements IJob {
         this.payload = payload;
     }
 
-    handle = async (job?:Job) => {
+    handle = async (job?: Job) => {
         logger.info("handler of the job is called");
 
-        if(job){
-            const key =Object.keys(this.payload)[0];
-            const codeLanguage=this.payload[key].language;
-            const code=this.payload[key].code;
-            const inputTestCase=this.payload[key].inputCase;
+        if (job) {
+            const key = Object.keys(this.payload)[0];
+            const codeLanguage = this.payload[key].language;
+            const code = this.payload[key].code;
+            const inputTestCase = this.payload[key].inputCase;
+            const outputTestCase = this.payload[key].outputCase;
 
-            const codeResponse:ExecutionResponse | null = await createExecutor(codeLanguage,code,inputTestCase);
+            const codeResponse: ExecutionResponse | null = await createExecutor(codeLanguage, code, inputTestCase,outputTestCase);
 
-            if(codeResponse){
-                const status:string=codeResponse.status;
+            if (codeResponse) {
+                const status: string = codeResponse.status;
 
-                if(status=="SUCCESS"){
+                if (status == "SUCCESS") {
                     console.log('code executed successfully');
                     console.log(codeResponse);
-                    console.log('output is :',codeResponse.output);
+                    console.log('output is :', codeResponse.output);
                 }
-                else{
+                else {
                     console.log('something went wrong');
                     console.log(codeResponse);
                 }
 
             }
-            
+
 
 
 
         }
     };
-    failed = (job?:Job) => {
+    failed = (job?: Job) => {
         logger.error("job failed");
-        if(job){
+        if (job) {
             console.log(job.id);
         }
     };

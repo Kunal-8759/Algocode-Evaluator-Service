@@ -18,9 +18,6 @@ export default class SubmissionJob implements IJob {
     handle = async (job?:Job) => {
         logger.info("handler of the job is called");
 
-        console.log(this.payload);
-
-
         if(job){
             const key =Object.keys(this.payload)[0];
             const codeLanguage=this.payload[key].language;
@@ -28,10 +25,11 @@ export default class SubmissionJob implements IJob {
             const inputTestCase=this.payload[key].inputCase;
 
             const codeResponse:ExecutionResponse | null = await createExecutor(codeLanguage,code,inputTestCase);
+
             if(codeResponse){
                 const status:string=codeResponse.status;
 
-                if(status=="COMPLETED"){
+                if(status=="SUCCESS"){
                     console.log('code executed successfully');
                     console.log(codeResponse);
                     console.log('output is :',codeResponse.output);

@@ -13,7 +13,7 @@ class CppExecutor implements CodeExecutorStrategy{
         await pullImage(CPP_IMAGE);
 
         const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > main.cpp && g++ main.cpp -o main && echo '${inputTestCase.replace(/'/g, `'\\"`)}' | ./main`;
-        console.log(runCommand);
+        // console.log("run command is     \n ",runCommand);
 
         const cppDockerContainer = await createContainer(CPP_IMAGE, [
             '/bin/sh', 

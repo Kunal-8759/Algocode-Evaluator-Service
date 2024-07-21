@@ -1,6 +1,7 @@
 import { Job } from 'bullmq';
 
 import logger from '../config/logger.config';
+import evaluationProducers from '../producers/evaluationProducers';
 import { IJob } from '../types/bullMq.jobdefinition';
 import { ExecutionResponse } from '../types/codeExecutorStrategy';
 import { SubmissionPayload } from '../types/submissionPayload';
@@ -24,10 +25,16 @@ export default class SubmissionJob implements IJob {
             const code = this.payload[key].code;
             const inputTestCase = this.payload[key].inputCase;
             const outputTestCase = this.payload[key].outputCase;
+            const userId=this.payload[key].userId;
+            const submissionId=this.payload[key].submissionId;
 
             const codeResponse: ExecutionResponse | null = await createExecutor(codeLanguage, code, inputTestCase,outputTestCase);
 
             if (codeResponse) {
+
+                //adding code response to the evaluation producer then evaluation queue
+                evaluationProducers({codeResponse,userId,submissionId});
+
                 const status: string = codeResponse.status;
 
                 if (status == "SUCCESS") {
